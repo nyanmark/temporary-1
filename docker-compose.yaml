@@ -1,0 +1,23 @@
+version: "3.1"
+
+services:
+  main:
+    build: .
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./index.html:/var/www/html/index.html:ro
+      - ./nginx.conf:/etc/nginx/sites-enabled/default:ro
+      - ./cert.crt:/etc/cert.crt:ro
+      - ./cert.key:/etc/cert.key:ro
+    
+  db:
+    image: mysql:latest
+    volumes:
+      - ./joomla.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    environment:
+      MYSQL_DATABASE: joomla
+      MYSQL_USER: joomla
+      MYSQL_PASSWORD: root123
+      MYSQL_ROOT_PASSWORD: root123
